@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	uuid "github.com/julianshen/GoUUID"
+	"github.com/julianshen/GoUUID"
 )
 
 func main() {
@@ -13,4 +13,15 @@ func main() {
 	} else {
 		fmt.Println(_uuid)
 	}
+
+	var str string
+	str = _uuid.String()
+
+	myuuid, err := uuid.UUIDFromString(str)
+
+    if err != nil {
+        fmt.Println(err)
+    }
+
+	fmt.Println(_uuid.version())
 }

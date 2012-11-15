@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"encoding/binary"
 	"encoding/hex"
+	"fmt"
 )
 
 type UUID struct {
@@ -57,6 +58,24 @@ func (uuid *UUID) String() string {
 	return code
 }
 
-func (uuid1 *UUID) Equal(uuid2 *UUID) bool {
+func (uuid *UUID) version() int {
+	return int((uuid.mostSigBits & 0x000000000000F000) >> 12)
+}
+
+func UUIDFromString(str string) (*UUID, error) {
+	var m1, m2, m3, lsb1, lsb2 uint64
+	_, err := fmt.Sscanf(str, "%x-%x-%x-%x-%x", &m1, &m2, &m3, &lsb1, &lsb2)
+
+	if err != nil {
+		return nil, err
+	}
+
+	msb := (m1 << 32) | (m2 << 16) | m3
+	lsb := (lsb1 << 48) | lsb2
+
+	return &UUID{msb, lsb}, nil
+}
+
+func (uuid1 *UUID) Equals(uuid2 *UUID) bool {
 	return (uuid1.mostSigBits == uuid2.mostSigBits) && (uuid1.lastSigBits == uuid2.lastSigBits)
 }
