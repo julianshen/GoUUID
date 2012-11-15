@@ -19,9 +19,9 @@ func main() {
 
 	myuuid, err := uuid.UUIDFromString(str)
 
-    if err != nil {
-        fmt.Println(err)
-    }
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	fmt.Println(_uuid.version())
 }
